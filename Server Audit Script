@@ -1,0 +1,86 @@
+!#/bin/bash
+#Description: New Server Audit Project
+#Author : Seth Owusu
+#Date: 09/07/2022
+
+## If user puppet exist
+id puppet
+if [ $? -eq 0 ]
+then
+echo " user pupper exist on the server "
+else 
+echo " user puppet does not exist "
+fi
+
+## Check the user puppet 
+
+PUPPET_SHELL= ` grep puppet /etc/passwd | awk -F: '{print$7}' `
+echo "the shell for user puppet is ${PUPPET_SHELL}"
+
+## Check if docker is installed 
+
+docker -v
+if [ $? eq o ]
+then 
+echo " docker is installed" 
+else
+echo " doecker does not exist "
+fi
+
+## Check if group puppet is created 
+getent group puppet
+if [ $? eq 0 ]
+echo " The group puppet exist on this server "
+else
+echo " The group puppet does not exist on this server "
+fi
+
+## Check if file /etc/grup.conf file exist
+ if [ -f /etc/grup.conf ]
+ then 
+ echo " file /etc/grup.conf exist "
+ else 
+ echo " file does not exist on the server " 
+fi
+
+ ## Check if /etc directory exist
+
+if [ -d /etc ]
+then echo " /etc directory exist "
+else 
+echo " /etc directory does not exist on this server "
+fi
+
+## Check if file /etc/selinux file exist
+ if [ -f /etc/selinux ]
+ then 
+ echo " file /etc/selinux exist "
+ else 
+ echo " file /etc/selinux does not exist on the server " 
+fi
+
+## Check if system is 32 or 64 bits
+echo " The system is $( getconf LONG_BIT ) bits "
+fi 
+## Check the number of CPU
+echo " The system have $( nproc ) CPUs"
+fi
+
+## Check total memory 
+MEM=`free -m | Mem: |awk '{print$2}'`
+echo " The total memory of this server is  ${ MEM } " 
+fi 
+
+## Check the kernel first digit
+KER= `uname -r | awk -F. '{print$1}'`
+if [ ${ KER } -lt 3 ] 
+echo " Your system's kernel is not up to date "
+else
+echo " Your kernel meets the requirement "
+fi 
+## Check the OS Version
+OS=` Cat /etc/*release |grep PRETTY_NAME|awk -F= '{print$2' `
+echo " The OS version of your system is ${OS} "
+fi 
+
+exist 0
