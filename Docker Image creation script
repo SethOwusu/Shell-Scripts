@@ -1,0 +1,52 @@
+#!/bin/bash
+#Description: Docker installation
+#Author : Seth Owusu
+#Date: 09/07/2022
+
+## Create Docker file 
+echo " What name will you call your workspace directory ? "
+read DF
+
+mkdir ${DF} && cd ${DF} && touch dockerfile
+
+echo "what is your base OS: Ubuntu, CentOS, alpine ?"
+read OS
+
+if [ ${OS} != CentOS ] || [ ${OS} != Ubuntu ] || [ ${OS} != alpine ] 
+then
+echo " Please enter a valid choice between centos, alpine or ubuntu "
+exit 1
+fi
+ 
+echo "What port will you like to use ?" 
+read p
+
+echo "What version do you want to use ?"
+read vs
+
+    if [[${OS} = CentOS ]];
+    then
+    echo -e "From ${OS}:${vs}""\nMAINTAINER ${USER}""\nEXPOSE ${p}""\nRUN yum update -y" > dockerfile 
+    echo "Building ${OS} image."
+    elif
+    [[${OS} = alpine ]];
+    then
+    echo -e "From ${OS}:${vs}""\nMAINTAINER ${USER}""\nEXPOSE ${p}""\nRUN apk update" > dockerfile 
+    echo "Builindg ${OS} image."
+      else
+      if [[${OS} = Ubuntu ]]
+    then
+    echo -e "From ${OS}:${vs}""\nMAINTAINER ${USER}""\nEXPOSE ${p}""\nRUN apt-get update -y" > dockerfile 
+    echo "Building ${OS} image."
+    fi
+      fi
+
+Docker image buid -t ${USER}_${OS} .
+  if [[$? -eq 0]];
+  then
+  rm -f dockerfile
+  cd - 
+  rm -r ${DF}
+  echo "${OS} image has been built successfully and dockerfile and directory deleted."
+  exit 0
+  fi
